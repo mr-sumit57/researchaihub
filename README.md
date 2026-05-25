@@ -116,11 +116,27 @@ supabase/
 
 ## Deploy to Vercel
 
-1. Push to GitHub
-2. Import project in [Vercel](https://vercel.com)
-3. Set root directory to `researchaihub`
-4. Add environment variables
-5. Deploy
+**Live site:** https://researchaihub.vercel.app
+
+The project is connected to GitHub (`mr-sumit57/researchaihub`). Each push to `master` triggers a production deployment.
+
+### Environment variables (Vercel Dashboard → Settings → Environment Variables)
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_SITE_URL` | Yes | `https://researchaihub.vercel.app` (or your custom domain) |
+| `NEXT_PUBLIC_SUPABASE_URL` | Optional | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Optional | Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional | For newsletter API & seed script |
+
+### Manual deploy
+
+```bash
+npm install -g vercel
+vercel login
+vercel link
+vercel deploy --prod
+```
 
 ```bash
 npm run build
