@@ -1,7 +1,20 @@
 import type { NextConfig } from "next";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+
+const root = dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    root,
+  },
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "api.dicebear.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "*.supabase.co" },
+    ],
+  },
 };
 
 export default nextConfig;

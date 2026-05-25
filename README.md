@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ResearchAIHub
 
-## Getting Started
+A modern, SEO-optimized AI tools directory for researchers, students, engineers, developers, and productivity users.
 
-First, run the development server:
+## Tech Stack
+
+- **Next.js 16** (App Router, SSR, SSG)
+- **React 19** + **TypeScript**
+- **Tailwind CSS v4** + shadcn-style UI components
+- **Framer Motion** animations
+- **Lucide Icons**
+- **Supabase** (database, auth, RLS)
+- **Vercel** deployment target
+
+## Features
+
+- 30 curated AI tools with seed data
+- 10 SEO-optimized blog posts
+- 11 category pages
+- Tool directory with search, filters, sorting, infinite scroll
+- Individual tool pages (features, pros/cons, reviews, FAQ, affiliates)
+- Dark/light mode
+- Newsletter signup (API + modal)
+- Admin dashboard
+- JSON-LD structured data, sitemap, robots.txt
+- Phase 2 architecture for AI recommendations
+
+## Quick Start
 
 ```bash
+cd researchaihub
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Works out of the box with **seed data** — no Supabase required for development.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Environment Variables
 
-## Learn More
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a project at [supabase.com](https://supabase.com)
+2. Run `supabase/schema.sql` in the SQL Editor
+3. If upgrading an existing DB, run `supabase/migrations/001_legacy_id.sql`
+4. Enable Email auth (magic link) in Authentication settings
+5. Add redirect URL: `http://localhost:3000/auth/callback`
+6. Copy API keys to `.env.local`
+7. Seed the database:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run db:seed
+```
 
-## Deploy on Vercel
+Requires `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Bookmarks
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Click the bookmark icon on any tool card (works offline via localStorage)
+- View saved tools at `/bookmarks`
+- Sign in to sync bookmarks to Supabase when configured
+- Local bookmarks merge to your account on first sign-in
+
+## OG / Social Images
+
+Dynamic Open Graph images are generated at `/opengraph-image` (1200×630). Set `NEXT_PUBLIC_SITE_URL` in production for correct canonical URLs.
+
+## Project Structure
+
+```
+src/
+├── app/              # Pages (App Router)
+│   ├── admin/        # Admin dashboard
+│   ├── api/          # Newsletter, contact, submit
+│   ├── auth/         # Login + callback
+│   ├── blog/         # Blog listing + posts
+│   ├── categories/   # Category pages
+│   └── tools/        # Directory + tool detail
+├── components/       # UI, layout, home, tools, blog
+├── data/             # Seed content (30 tools, 10 posts)
+├── lib/              # Supabase, SEO, data layer
+└── types/            # TypeScript types
+supabase/
+└── schema.sql        # Database schema
+```
+
+## Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` | Homepage |
+| `/tools` | AI Tools Directory |
+| `/tools/[slug]` | Individual Tool |
+| `/blog` | Blog |
+| `/blog/[slug]` | Blog Post |
+| `/categories/[slug]` | Category |
+| `/trending` | Trending Tools |
+| `/free-tools` | Free Tools |
+| `/about` | About |
+| `/contact` | Contact |
+| `/submit` | Submit Tool |
+| `/newsletter` | Newsletter |
+| `/privacy` | Privacy Policy |
+| `/terms` | Terms |
+| `/admin` | Admin Dashboard |
+| `/auth/login` | Authentication |
+
+## Deploy to Vercel
+
+1. Push to GitHub
+2. Import project in [Vercel](https://vercel.com)
+3. Set root directory to `researchaihub`
+4. Add environment variables
+5. Deploy
+
+```bash
+npm run build
+```
+
+## Monetization
+
+- Affiliate links on tool pages (`affiliate_url` field)
+- Sponsored tool badges (`is_sponsored`)
+- AdSense placeholder on homepage
+- Premium featured listings via admin
+- Newsletter sponsorships
+
+## Phase 2 (Prepared)
+
+Extend `src/lib/data.ts` for:
+
+- AI tool recommendation engine
+- Personalized suggestions
+- AI search assistant
+- Smart comparisons
+
+Database comments in `schema.sql` mark future tables.
+
+## License
+
+MIT
